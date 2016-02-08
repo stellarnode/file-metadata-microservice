@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require("fs");
 var path = process.cwd();
 var multer = require("multer");
 
@@ -43,6 +44,17 @@ module.exports = function (app, passport) {
 				"fileSizeInBytes": req.file.size
 			};
 			res.json(out);
+			
+			// The following deletes uploaded files //
+			
+			fs.readdir(path + "/uploads/", function(err, files) {
+				if (err) console.log(err);
+				files.forEach(function(file) {
+					fs.unlink(path + "/uploads/" + file, function(err) {
+						if (err) console.log(err);
+					});
+				});
+			});
 		});
 		
 //////////////////////////////////////////////////////////		
