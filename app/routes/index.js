@@ -2,6 +2,8 @@
 
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var uploadFile = require(path + '/app/controllers/fileUpload.server.js');
+
 
 module.exports = function (app, passport) {
 
@@ -16,9 +18,20 @@ module.exports = function (app, passport) {
 	var clickHandler = new ClickHandler();
 
 	app.route('/')
-		.get(isLoggedIn, function (req, res) {
+		.get(function (req, res) {
 			res.sendFile(path + '/public/index.html');
 		});
+		
+
+	app.route('/uploads/')
+		.post(function(req, res) {
+			uploadFile(req, res, function(request, response) {
+				// console.log("file object: ", request.file);
+				// res.json(request.file);
+			});
+		});
+		
+//////////////////////////////////////////////////////////		
 
 	app.route('/login')
 		.get(function (req, res) {
