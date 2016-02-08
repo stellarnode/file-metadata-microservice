@@ -1,8 +1,20 @@
 'use strict';
 
 var path = process.cwd();
+var multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path + '/uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "_" + file.originalname)
+  }
+});
+
+var upload = multer({ storage: storage });
+
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
-var uploadFile = require(path + '/app/controllers/fileUpload.server.js');
 
 
 module.exports = function (app, passport) {
@@ -24,11 +36,13 @@ module.exports = function (app, passport) {
 		
 
 	app.route('/uploads/')
-		.post(function(req, res) {
-			uploadFile(req, res, function(request, response) {
-				// console.log("file object: ", request.file);
-				// res.json(request.file);
-			});
+		.post(upload.single("file"), function(req, res) {
+			console.log("file size: ", req.file.size);
+			var out = {
+				"fileName": req.file.originalname,
+				"fileSizeInBytes": req.file.size
+			};
+			res.json(out);
 		});
 		
 //////////////////////////////////////////////////////////		

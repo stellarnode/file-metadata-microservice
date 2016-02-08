@@ -2,19 +2,17 @@
 
 (function() {
     
-    var entryField = document.querySelector("input.enter-date");
+    var fileForm = document.getElementById("file-form");
+    var fileSelector = document.querySelector("input.file-selector");
     var submitBtn = document.querySelector("input.submit-entry");
-    var dateForm = document.getElementById("date-form");
     var interaction = document.getElementById("interaction");
     var reqUrl = "";
+
     
-    
- /*  
-    
-    function sendAjax(str) {
-        var link = appUrl + "/_api/urls/" + str;
+    function sendAjax(data, next) {
+        var link = appUrl + "/uploads/";
         reqUrl = link;
-        ajaxFunctions.ajaxRequest("GET", link, displayResult);
+        ajaxFunctions.ajaxRequest("POST", link, data, next);
     }
     
     function displayResult(res) {
@@ -46,16 +44,12 @@
         document.getElementById("codeFormat2").innerHTML = JSON.stringify(resObj, null, 4);
     }
     
-//*/
-    
-    
     document.addEventListener("DOMContentLoaded", function() {
         
-        dateForm.addEventListener("submit", function(e) {
+        fileForm.addEventListener("submit", function(e) {
             e.preventDefault();
-            var value = entryField.value;
-            // sendAjax(value);
-            entryField.value = "";
+            var formData = new FormData(fileForm);
+            sendAjax(formData, displayResult);
         });
         
     });
