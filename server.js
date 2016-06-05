@@ -4,7 +4,7 @@ var express = require('express');
 var routes = require('./app/routes/index.js');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var session = require('express-session');
+// var session = require('express-session');
 var multer = require('multer');
 
 var app = express();
@@ -17,14 +17,14 @@ app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use('/common', express.static(process.cwd() + '/app/common'));
 
-app.use(session({
-	secret: 'secretClementine',
-	resave: false,
-	saveUninitialized: true
-}));
+// app.use(session({
+// 	secret: 'secretClementine',
+// 	resave: false,
+// 	saveUninitialized: true
+// }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 routes(app, passport);
 
